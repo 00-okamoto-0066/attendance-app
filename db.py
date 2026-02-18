@@ -41,3 +41,18 @@ def show_attendance_list():
     conn.close()
 
     return attendance_list
+
+
+
+def show_attendance_by_employee(employee_id):
+    conn = sqlite3.connect("attendance.db")
+    cursor = conn.cursor()
+    # DBから取得した勤怠一覧（タプル）を、文字列のリストに変換する
+    cursor.execute("SELECT * FROM attendance_list WHERE employee_id =?",
+        (employee_id,)
+    )
+    attendance_list  = cursor.fetchall()
+        
+    conn.close()
+
+    return attendance_list
