@@ -1,7 +1,17 @@
-from flask import Flask, request,render_template
+from flask import Flask, request,render_template,Blueprint,redirect, url_for
+from flask_todo_app.db.init_db import init_db
+from flask_todo_app.routes.todos import todo_bp
 import main
 
+# Flaskアプリを作成・設定する
+
 app = Flask(__name__)
+# attendance機能用のBlueprint
+attendance_bp = Blueprint("attendance", __name__)
+app.register_blueprint(todo_bp,url_for_prefix='/todo')
+app.register_blueprint(attendance_bp)
+init_db()
+
 
 # URLを使ったときにトップページ
 @app.route("/")
@@ -19,7 +29,8 @@ def index():
     if app_name == "勤怠アプリ":
         return render_template("attendance.html")
     elif app_name == "ToDoアプリ":
-        return render_template("todo.html")
+        print("OK")
+        return redirect(url_for("todo.home"))
     else:
         return "アプリ見つかりません"
 
